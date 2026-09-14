@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0c0a;
+  --bg-raised: #13160f;
+  --bg-card: #15180f;
+  --line: rgba(201, 162, 60, 0.14);
+  --line-strong: rgba(201, 162, 60, 0.28);
+  --ink: #f4f1e6;
+  --ink-dim: #a7a496;
+  --ink-faint: #6f6d61;
+  --gold: #c9a23c;
+  --gold-bright: #e8c874;
+  --green: #5a8a67;
+  --green-deep: #1c2b20;
+  --green-tint: rgba(90, 138, 103, 0.12);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-gold: var(--gold);
+  --color-green: var(--green);
+  --font-display: "Fraunces Variable", "Iowan Old Style", serif;
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: dark; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+}
+
+.font-mono-brand {
+  font-family: var(--font-mono);
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.hairline {
+  border-color: var(--line);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(120deg, var(--gold-bright), var(--gold) 55%, #8f7527);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-gold {
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  color: #191405;
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.btn-gold:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+.btn-ghost {
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.btn-ghost:hover { border-color: var(--gold); background: rgba(201,162,60,0.06); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+::selection { background: var(--gold); color: #191405; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
