@@ -10,7 +10,6 @@ export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [checkEmail, setCheckEmail] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,7 +17,7 @@ export default function SignupForm() {
     setLoading(true);
 
     try {
-      const { data, error } = await getSupabaseClient().auth.signUp({
+      const { error } = await getSupabaseClient().auth.signUp({
         email,
         password,
       });
@@ -28,29 +27,13 @@ export default function SignupForm() {
         return;
       }
 
-      if (data.session) {
-        router.push("/");
-        router.refresh();
-        return;
-      }
-
-      setCheckEmail(true);
+      router.push("/");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
-  }
-
-  if (checkEmail) {
-    return (
-      <div className="card p-8 text-center">
-        <p className="text-[15px]">
-          Check <span className="text-[color:var(--gold)]">{email}</span> for a
-          confirmation link to finish creating your account.
-        </p>
-      </div>
-    );
   }
 
   return (
@@ -90,11 +73,10 @@ export default function SignupForm() {
         disabled={loading}
         className="btn-gold rounded-full px-6 py-3 text-[15px] mt-2 disabled:opacity-60"
       >
-        {loading ? "Creating account…" : "Continue to payment"}
+        {loading ? "Creating account…" : "Create account"}
       </button>
       <p className="text-xs text-[color:var(--ink-faint)] text-center leading-relaxed">
-        You&rsquo;ll add your card on the next step. No charge for 7 days —
-        cancel anytime before then.
+        Your 7-day free trial starts now — no card required yet.
       </p>
     </form>
   );
