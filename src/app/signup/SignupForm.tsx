@@ -12,6 +12,7 @@ export default function SignupForm() {
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    console.log("[signup] handleSubmit fired");
     e.preventDefault();
     setError(null);
     setLoading(true);
