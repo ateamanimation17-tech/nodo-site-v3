@@ -71,7 +71,7 @@ export default async function BlogPost({
             </p>
             <Link
               href="/pricing"
-              className="btn-gold rounded-full px-6 py-3 text-sm whitespace-nowrap"
+              className="btn-accent rounded-full px-6 py-3 text-sm whitespace-nowrap"
             >
               Start free trial
             </Link>

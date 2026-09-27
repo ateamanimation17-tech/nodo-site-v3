@@ -14,7 +14,7 @@ export default function TabMockup() {
               className="text-xs px-3.5 py-1.5 rounded-full font-mono-brand tracking-wide"
               style={
                 i === 0
-                  ? { background: "var(--gold)", color: "#191405" }
+                  ? { background: "var(--accent)", color: "#1c1d1e" }
                   : { border: "1px solid var(--line-strong)", color: "var(--ink-dim)" }
               }
             >
@@ -45,7 +45,7 @@ export default function TabMockup() {
                 background:
                   i < 18
                     ? i % 4 === 0
-                      ? "var(--gold)"
+                      ? "var(--accent)"
                       : "var(--green)"
                     : "rgba(255,255,255,0.06)",
               }}
@@ -55,9 +55,9 @@ export default function TabMockup() {
 
         <div className="grid grid-cols-3 gap-3">
           {[
-            ["Protein", "162g", "var(--gold)"],
+            ["Protein", "162g", "var(--accent)"],
             ["Kcal", "2,340", "var(--green)"],
-            ["Steps", "8.4k", "var(--gold-bright)"],
+            ["Steps", "8.4k", "var(--accent-bright)"],
           ].map(([label, val, color]) => (
             <div
               key={label}

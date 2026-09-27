@@ -18,7 +18,7 @@ const pillars = [
   },
   {
     tag: "02 — FINANCE",
-    accent: "var(--gold)",
+    accent: "var(--accent)",
     title: "One number that tells you the truth about your money",
     body: "Every wallet, every transaction, every subscription about to renew, in a single live net worth view — not a spreadsheet you update once a month and never open again.",
     features: [
@@ -29,7 +29,7 @@ const pillars = [
   },
   {
     tag: "03 — BRAIN",
-    accent: "var(--gold-bright)",
+    accent: "var(--accent-bright)",
     title: "Get your projects out of your head and into one place",
     body: "Life areas, projects, and tasks that connect to each other. A habit tracker that resets itself every morning. A focus timer for the two hours that actually matter.",
     features: [
@@ -58,7 +58,7 @@ export default function Home() {
               <h1 className="font-display text-[2.6rem] leading-[1.05] md:text-[3.6rem] md:leading-[1.03] mb-7">
                 Six apps to run one life
                 <br />
-                is <span className="gold-gradient-text italic">six too many</span>.
+                is <span className="accent-gradient-text italic">six too many</span>.
               </h1>
               <p className="text-lg md:text-xl text-[color:var(--ink-dim)] max-w-lg mb-9 leading-relaxed">
                 NODO puts your training, your food, your money, and your focus
@@ -68,7 +68,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <Link
                   href="/pricing"
-                  className="btn-gold rounded-full px-7 py-3.5 text-[15px]"
+                  className="btn-accent rounded-full px-7 py-3.5 text-[15px]"
                 >
                   Start your reset — €14/mo
                 </Link>
@@ -216,7 +216,7 @@ export default function Home() {
                   "Cancel anytime, 7-day trial",
                 ].map((f) => (
                   <li key={f} className="flex gap-2">
-                    <span className="text-[color:var(--gold)]">·</span>
+                    <span className="text-[color:var(--accent)]">·</span>
                     {f}
                   </li>
                 ))}
@@ -231,7 +231,7 @@ export default function Home() {
               </p>
               <Link
                 href="/signup"
-                className="btn-gold rounded-full px-8 py-3.5 text-[15px] inline-block"
+                className="btn-accent rounded-full px-8 py-3.5 text-[15px] inline-block"
               >
                 Start free trial
               </Link>

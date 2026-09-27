@@ -54,7 +54,7 @@ export default function PricingPage() {
             </p>
             <Link
               href="/signup"
-              className="btn-gold rounded-full px-9 py-4 text-[15px] inline-block mb-10"
+              className="btn-accent rounded-full px-9 py-4 text-[15px] inline-block mb-10"
             >
               Start free trial
             </Link>
@@ -68,7 +68,7 @@ export default function PricingPage() {
                 "Monthly recipe & journal drops",
               ].map((f) => (
                 <li key={f} className="flex gap-2">
-                  <span className="text-[color:var(--gold)]">·</span>
+                  <span className="text-[color:var(--accent)]">·</span>
                   {f}
                 </li>
               ))}

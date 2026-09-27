@@ -70,7 +70,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="btn-gold rounded-full px-6 py-3 text-[15px] mt-2 disabled:opacity-60"
+        className="btn-accent rounded-full px-6 py-3 text-[15px] mt-2 disabled:opacity-60"
       >
         {loading ? "Signing in…" : "Sign in"}
       </button>

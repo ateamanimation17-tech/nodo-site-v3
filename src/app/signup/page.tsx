@@ -18,7 +18,7 @@ export default function SignupPage() {
           <SignupForm />
           <p className="text-sm text-[color:var(--ink-dim)] text-center mt-6">
             Already a member?{" "}
-            <Link href="/login" className="text-[color:var(--gold)]">
+            <Link href="/login" className="text-[color:var(--accent)]">
               Sign in
             </Link>
           </p>

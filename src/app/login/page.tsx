@@ -16,7 +16,7 @@ export default function LoginPage() {
           <LoginForm />
           <p className="text-sm text-[color:var(--ink-dim)] text-center mt-6">
             No account yet?{" "}
-            <Link href="/signup" className="text-[color:var(--gold)]">
+            <Link href="/signup" className="text-[color:var(--accent)]">
               Start your free trial
             </Link>
           </p>
