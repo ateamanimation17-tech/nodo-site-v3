@@ -30,6 +30,10 @@ export async function POST(request: Request) {
       allow_promotion_codes: true,
       success_url: `${origin}/?checkout=success`,
       cancel_url: `${origin}/pricing?checkout=cancelled`,
+      // Stripe's newer "Managed Payments" feature requires every product to
+      // have a tax code set, which NODO Membership doesn't have yet. Disable
+      // it for this session rather than touching the account-wide setting.
+      managed_payments: { enabled: false },
     });
 
     if (!session.url) {
