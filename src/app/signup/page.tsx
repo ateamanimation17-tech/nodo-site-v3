@@ -11,7 +11,7 @@ export default function SignupPage() {
       <Nav />
       <main className="flex-1 flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-sm">
-          <p className="eyebrow mb-4 text-center">7-day free trial</p>
+          <p className="eyebrow mb-4 text-center">5-day free trial</p>
           <h1 className="font-display text-3xl text-center mb-8">
             Start your reset
           </h1>

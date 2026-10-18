@@ -80,7 +80,7 @@ export default function Home() {
                 </Link>
               </div>
               <p className="text-sm text-[color:var(--ink-faint)]">
-                7-day free trial. Cancel anytime, in two clicks.
+                5-day free trial. Cancel anytime, in two clicks.
               </p>
             </div>
             <TabMockup />
@@ -213,7 +213,7 @@ export default function Home() {
                   "Live net worth & budgets",
                   "Habit tracker & focus timer",
                   "Monthly blog & recipe drops",
-                  "Cancel anytime, 7-day trial",
+                  "Cancel anytime, 5-day trial",
                 ].map((f) => (
                   <li key={f} className="flex gap-2">
                     <span className="text-[color:var(--accent)]">·</span>
