@@ -7,11 +7,11 @@ export const metadata = { title: "Pricing — NODO" };
 const faqs = [
   {
     q: "Is this a subscription?",
-    a: "Yes — €14/month, billed monthly, no long-term contract. You can cancel from your account settings in two clicks; your access continues until the end of the period you already paid for.",
+    a: "Yes — €8/month, billed monthly, no long-term contract. You can cancel from your account settings in two clicks; your access continues until the end of the period you already paid for.",
   },
   {
     q: "What happens after the free trial?",
-    a: "Your card is charged automatically when the 7-day trial ends. We'll email you two days before, and you can cancel any time before then at no cost.",
+    a: "Your card is charged automatically when the 5-day trial ends. We'll email you before then, and you can cancel any time before that at no cost.",
   },
   {
     q: "Does my data sync across my devices?",
@@ -47,10 +47,10 @@ export default function PricingPage() {
           <div className="card p-10 md:p-14 text-center">
             <p className="eyebrow mb-4">NODO Membership</p>
             <p className="font-display text-6xl tabular mb-2">
-              €14<span className="text-2xl align-top">/mo</span>
+              €8<span className="text-2xl align-top">/mo</span>
             </p>
             <p className="text-sm text-[color:var(--ink-faint)] mb-8">
-              7-day free trial · cancel anytime
+              5-day free trial · cancel anytime
             </p>
             <Link
               href="/signup"
