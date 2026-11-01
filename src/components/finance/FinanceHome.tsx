@@ -20,7 +20,7 @@ export default function FinanceHome() {
       <IncomeTracker refreshKey={version} onChange={bump} />
       <BudgetTracker onChange={bump} />
       <SubscriptionTracker />
-      <SavingsGoals />
+      <SavingsGoals refreshKey={version} />
     </div>
   );
 }
