@@ -17,6 +17,7 @@ export type Recipe = {
 export const RECIPES: Recipe[] = [
   {
     id: "greek-yogurt-power-bowl",
+    photoUrl: "/recipe-photos/greek-yogurt-power-bowl.jpg",
     name: "Greek Yogurt Power Bowl",
     mealType: "breakfast",
     calories: 420,
@@ -38,6 +39,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "veggie-egg-scramble",
+    photoUrl: "/recipe-photos/veggie-egg-scramble.jpg",
     name: "Veggie Egg Scramble",
     mealType: "breakfast",
     calories: 380,
@@ -60,6 +62,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "protein-oats",
+    photoUrl: "/recipe-photos/protein-oats.jpg",
     name: "Protein Oats",
     mealType: "breakfast",
     calories: 450,
@@ -81,6 +84,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "smoked-salmon-toast",
+    photoUrl: "/recipe-photos/smoked-salmon-toast.jpg",
     name: "Smoked Salmon Toast",
     mealType: "breakfast",
     calories: 400,
@@ -102,6 +106,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "cottage-cheese-pancakes",
+    photoUrl: "/recipe-photos/cottage-cheese-pancakes.jpg",
     name: "Cottage Cheese Pancakes",
     mealType: "breakfast",
     calories: 410,
@@ -123,6 +128,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "chicken-quinoa-bowl",
+    photoUrl: "/recipe-photos/chicken-quinoa-bowl.jpg",
     name: "Chicken & Quinoa Bowl",
     mealType: "lunch",
     calories: 520,
@@ -144,6 +150,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "turkey-avocado-wrap",
+    photoUrl: "/recipe-photos/turkey-avocado-wrap.jpg",
     name: "Turkey & Avocado Wrap",
     mealType: "lunch",
     calories: 480,
@@ -166,6 +173,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "tuna-pasta-salad",
+    photoUrl: "/recipe-photos/tuna-pasta-salad.jpg",
     name: "Tuna Pasta Salad",
     mealType: "lunch",
     calories: 500,
@@ -187,6 +195,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "beef-sweet-potato-skillet",
+    photoUrl: "/recipe-photos/beef-sweet-potato-skillet.jpg",
     name: "Beef & Sweet Potato Skillet",
     mealType: "lunch",
     calories: 540,
@@ -208,6 +217,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "baked-salmon-veg",
+    photoUrl: "/recipe-photos/baked-salmon-veg.jpg",
     name: "Baked Salmon & Veg",
     mealType: "dinner",
     calories: 510,
@@ -229,6 +239,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "chicken-stir-fry",
+    photoUrl: "/recipe-photos/chicken-stir-fry.jpg",
     name: "Chicken Stir-Fry",
     mealType: "dinner",
     calories: 490,
@@ -250,6 +261,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "lentil-veg-curry",
+    photoUrl: "/recipe-photos/lentil-veg-curry.jpg",
     name: "Lentil & Veg Curry",
     mealType: "dinner",
     calories: 460,
@@ -271,6 +283,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "turkey-meatballs-zoodles",
+    photoUrl: "/recipe-photos/turkey-meatballs-zoodles.jpg",
     name: "Turkey Meatballs & Zoodles",
     mealType: "dinner",
     calories: 450,
@@ -292,6 +305,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "protein-shake-almonds",
+    photoUrl: "/recipe-photos/protein-shake-almonds.jpg",
     name: "Protein Shake & Almonds",
     mealType: "snack",
     calories: 280,
@@ -310,6 +324,7 @@ export const RECIPES: Recipe[] = [
   },
   {
     id: "cottage-cheese-pineapple",
+    photoUrl: "/recipe-photos/cottage-cheese-pineapple.jpg",
     name: "Cottage Cheese & Pineapple",
     mealType: "snack",
     calories: 220,
