@@ -6,6 +6,8 @@ import type { ActivityLevel, Goal, Sex } from "@/lib/macros";
 import ProfileForm from "./ProfileForm";
 import WorkoutSection from "./WorkoutSection";
 import NutritionSection from "./NutritionSection";
+import FoodTracker from "./FoodTracker";
+import WorkoutMusic from "./WorkoutMusic";
 
 export type FitnessProfile = {
   sex: Sex;
@@ -84,6 +86,15 @@ export default function ResetHome() {
       </div>
 
       <WorkoutSection trainingDays={profile.training_days} />
+      <WorkoutMusic />
+      <FoodTracker
+        targets={{
+          calories: profile.target_calories,
+          proteinG: profile.target_protein_g,
+          carbsG: profile.target_carbs_g,
+          fatG: profile.target_fat_g,
+        }}
+      />
       <NutritionSection targetCalories={profile.target_calories} />
     </div>
   );
