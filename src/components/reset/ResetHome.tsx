@@ -9,6 +9,7 @@ import NutritionSection from "./NutritionSection";
 import FoodTracker from "./FoodTracker";
 import WorkoutMusic from "./WorkoutMusic";
 import DailyCheckin from "./DailyCheckin";
+import StepsHistory from "./StepsHistory";
 import ProgressPhotos from "./ProgressPhotos";
 import SupplementGuide from "./SupplementGuide";
 
@@ -89,6 +90,7 @@ export default function ResetHome() {
       </div>
 
       <DailyCheckin />
+      <StepsHistory />
       <WorkoutSection trainingDays={profile.training_days} />
       <WorkoutMusic />
       <FoodTracker
