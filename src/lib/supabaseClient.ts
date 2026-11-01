@@ -1,4 +1,5 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 let client: SupabaseClient | null = null;
 
@@ -13,7 +14,10 @@ export function getSupabaseClient(): SupabaseClient {
       );
     }
 
-    client = createClient(supabaseUrl, supabaseKey);
+    // createBrowserClient (rather than the plain supabase-js createClient)
+    // stores the session in cookies instead of localStorage, so the
+    // middleware and server components below can see it too.
+    client = createBrowserClient(supabaseUrl, supabaseKey);
   }
 
   return client;

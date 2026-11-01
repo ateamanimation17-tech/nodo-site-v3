@@ -27,7 +27,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push("/");
+      router.push("/app");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
