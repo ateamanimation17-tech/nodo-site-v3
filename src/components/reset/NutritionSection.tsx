@@ -91,6 +91,7 @@ export default function NutritionSection({ targetCalories }: { targetCalories: n
               />
             ))}
           </div>
+          <p className="text-[11px] text-[color:var(--ink-faint)] mt-4">Food photos via Pexels.</p>
         </>
       )}
     </div>
@@ -108,17 +109,36 @@ function RecipeRow({
 }) {
   return (
     <div className="rounded-xl overflow-hidden" style={{ background: "var(--bg-raised)", border: "1px solid var(--line)" }}>
-      <button onClick={onToggle} className="w-full flex items-center justify-between px-4 py-3 text-left">
-        <div>
-          <p className="text-[11px] uppercase tracking-wide text-[color:var(--ink-faint)] font-mono-brand">
-            {recipe.mealType}
-          </p>
-          <p className="text-[15px] font-medium">{recipe.name}</p>
+      <button onClick={onToggle} className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left">
+        <div className="flex items-center gap-3 min-w-0">
+          {recipe.photoUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={recipe.photoUrl}
+              alt={recipe.name}
+              className="w-12 h-12 rounded-lg object-cover shrink-0"
+            />
+          )}
+          <div className="min-w-0">
+            <p className="text-[11px] uppercase tracking-wide text-[color:var(--ink-faint)] font-mono-brand">
+              {recipe.mealType}
+            </p>
+            <p className="text-[15px] font-medium truncate">{recipe.name}</p>
+          </div>
         </div>
-        <span className="text-xs text-[color:var(--ink-faint)] font-mono-brand tabular">{recipe.calories} kcal</span>
+        <span className="text-xs text-[color:var(--ink-faint)] font-mono-brand tabular shrink-0">{recipe.calories} kcal</span>
       </button>
       {expanded && (
         <div className="px-4 pb-4 flex flex-col gap-3">
+          {recipe.photoUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={recipe.photoUrl}
+              alt={recipe.name}
+              className="w-full rounded-lg object-cover"
+              style={{ maxHeight: "220px" }}
+            />
+          )}
           <p className="text-xs text-[color:var(--ink-faint)] font-mono-brand tabular">
             {recipe.protein}p / {recipe.carbs}c / {recipe.fat}f
           </p>

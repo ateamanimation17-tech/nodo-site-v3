@@ -40,6 +40,7 @@ export default function WorkoutSection({ trainingDays }: { trainingDays: number 
   const [remaining, setRemaining] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [openVideo, setOpenVideo] = useState<string | null>(null);
 
   async function loadRecent() {
     const supabase = getSupabaseClient();
@@ -198,12 +199,36 @@ export default function WorkoutSection({ trainingDays }: { trainingDays: number 
               className="rounded-xl p-4"
               style={{ background: "var(--bg-raised)", border: "1px solid var(--line)" }}
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-2 gap-2">
                 <p className="text-[15px] font-medium">{exercise.name}</p>
-                <span className="text-xs text-[color:var(--ink-faint)] font-mono-brand tabular">
-                  {exercise.sets} × {exercise.reps}
-                </span>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-xs text-[color:var(--ink-faint)] font-mono-brand tabular">
+                    {exercise.sets} × {exercise.reps}
+                  </span>
+                  {exercise.videoId && (
+                    <button
+                      onClick={() => setOpenVideo((v) => (v === exercise.name ? null : exercise.name))}
+                      className="btn-ghost rounded-full px-2.5 py-1 text-[11px]"
+                    >
+                      {openVideo === exercise.name ? "Hide video" : "▶ Form"}
+                    </button>
+                  )}
+                </div>
               </div>
+              {exercise.videoId && openVideo === exercise.name && (
+                <div className="mb-3 rounded-lg overflow-hidden" style={{ aspectRatio: "16/9" }}>
+                  <iframe
+                    key={exercise.videoId}
+                    src={`https://www.youtube.com/embed/${exercise.videoId}`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: "none" }}
+                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              )}
               {lastSets.length > 0 && (
                 <p className="text-xs text-[color:var(--ink-faint)] mb-2">
                   Last: {lastSets.map((s) => `${s.weight_kg ?? "–"}kg×${s.reps ?? "–"}`).join(", ")}

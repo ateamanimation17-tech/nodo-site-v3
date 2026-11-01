@@ -9,6 +9,7 @@ export type Recipe = {
   protein: number;
   carbs: number;
   fat: number;
+  photoUrl?: string;
   ingredients: Ingredient[];
   instructions: string[];
 };

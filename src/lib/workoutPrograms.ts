@@ -1,4 +1,4 @@
-export type Exercise = { name: string; sets: number; reps: string };
+export type Exercise = { name: string; sets: number; reps: string; videoId?: string };
 export type WorkoutDay = { label: string; exercises: Exercise[] };
 
 export const WORKOUT_SPLITS: Record<number, WorkoutDay[]> = {
