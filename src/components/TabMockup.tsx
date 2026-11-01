@@ -7,8 +7,8 @@ export default function TabMockup() {
         style={{ background: "radial-gradient(closest-side, var(--green-tint), transparent)" }}
       />
       <div className="relative card p-5 md:p-6 shadow-2xl">
-        <div className="flex gap-2 mb-5">
-          {["Reset", "Finance", "Brain"].map((t, i) => (
+        <div className="flex flex-wrap gap-2 mb-5">
+          {["Projects", "Reset", "Finance", "Anxiety"].map((t, i) => (
             <span
               key={t}
               className="text-xs px-3.5 py-1.5 rounded-full font-mono-brand tracking-wide"

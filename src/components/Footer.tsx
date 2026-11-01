@@ -11,8 +11,9 @@ export default function Footer() {
             <span className="font-display text-base tracking-wide">NODO</span>
           </div>
           <p className="text-sm text-[color:var(--ink-faint)] max-w-xs leading-relaxed">
-            The whole-life operating system. Reset, Finance, and Brain —
-            one membership, synced everywhere.
+            The whole-life operating system. Projects Management, The Nodo
+            Reset Method, Finances Management, and Anxiety Control — one
+            membership, synced everywhere.
           </p>
         </div>
         <div>

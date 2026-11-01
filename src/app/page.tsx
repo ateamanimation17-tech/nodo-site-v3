@@ -6,36 +6,47 @@ import { posts } from "@/lib/posts";
 
 const pillars = [
   {
-    tag: "01 — RESET",
+    tag: "01 — PROJECTS MANAGEMENT",
+    accent: "var(--accent-bright)",
+    title: "Get your projects out of your head and into one place",
+    body: "Projects and tasks that connect to each other, a daily habit checklist that resets itself every morning, and a focus timer for the two hours that actually matter.",
+    features: [
+      "Projects with progress computed from their linked tasks",
+      "Daily habit checklist with built-in streaks",
+      "Focus/Pomodoro timer built right into the tab",
+    ],
+  },
+  {
+    tag: "02 — THE NODO RESET METHOD",
     accent: "var(--green)",
     title: "Train and eat like it's programmed for you, because it is",
-    body: "A real 3, 4, or 5-day training split chosen for you, guided set by set. A calorie and macro target that isn't a guess. A 5-day meal rotation that rebuilds itself around that target from 52 real recipes — not a static PDF you'll abandon in a week.",
+    body: "A real 3, 4, or 5-day training split chosen for you, guided set by set. A calorie and macro target that isn't a guess. A 5-day meal rotation that rebuilds itself around that target — plus a daily steps tracker with a weekly and monthly history, so the whole picture lives in one place.",
     features: [
       "Guided workouts with inline weight & rep logging",
       "Macro-matched meal rotation, auto-rebuilt as your targets change",
-      "Shopping list that stays in sync with what you're actually eating",
+      "Daily steps tracker with weekly & monthly averages",
     ],
   },
   {
-    tag: "02 — FINANCE",
+    tag: "03 — FINANCES MANAGEMENT",
     accent: "var(--accent)",
     title: "One number that tells you the truth about your money",
-    body: "Every wallet, every transaction, every subscription about to renew, in a single live net worth view — not a spreadsheet you update once a month and never open again.",
+    body: "Every account, every transaction, every subscription about to renew, in a single live net worth view. Track income as it lands, and see exactly what to save each week to hit a goal on time.",
     features: [
+      "Live net worth across your accounts, updated as you go",
       "Budgets that show overspending before the month ends",
-      "Subscription renewal tracking with one-tap pay",
-      "Savings goals and a compound growth calculator",
+      "Income tracking and savings goals with a weekly pacing number",
     ],
   },
   {
-    tag: "03 — BRAIN",
-    accent: "var(--accent-bright)",
-    title: "Get your projects out of your head and into one place",
-    body: "Life areas, projects, and tasks that connect to each other. A habit tracker that resets itself every morning. A focus timer for the two hours that actually matter.",
+    tag: "04 — ANXIETY CONTROL",
+    accent: "#e5787c",
+    title: "A calmer head, one tool at a time",
+    body: "A place to get a racing thought out of your head, work through it with a structured CBT record, and climb a personal exposure ladder at your own pace — backed by guided meditation and synthesized ambient sound when you just need five quiet minutes.",
     features: [
-      "Projects with progress computed from their linked tasks",
-      "Daily habit checklist, built-in focus/Pomodoro timer",
-      "Reading list, watchlist, and a home for the tools worth keeping",
+      "Worry dump, CBT thought record, and a personal exposure ladder",
+      "Guided meditation and ambient sounds — rain, ocean, white noise",
+      "Daily anxiety check-in, correlated with your Reset habits",
     ],
   },
 ];
@@ -61,16 +72,17 @@ export default function Home() {
                 is <span className="accent-gradient-text italic">six too many</span>.
               </h1>
               <p className="text-lg md:text-xl text-[color:var(--ink-dim)] max-w-lg mb-9 leading-relaxed">
-                NODO puts your training, your food, your money, and your focus
-                in one system that actually stays synced — across your phone,
-                your laptop, whatever you open next.
+                NODO puts your projects, your training and food, your money,
+                and your anxiety tools in one system that actually stays
+                synced — across your phone, your laptop, whatever you open
+                next.
               </p>
               <div className="flex flex-wrap gap-4 mb-10">
                 <Link
                   href="/pricing"
                   className="btn-accent rounded-full px-7 py-3.5 text-[15px]"
                 >
-                  Start your reset — €14/mo
+                  Get started — €8/mo
                 </Link>
                 <Link
                   href="#system"
@@ -90,11 +102,11 @@ export default function Home() {
         {/* SYSTEM PILLARS */}
         <section id="system" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
           <div className="max-w-2xl mb-16">
-            <p className="eyebrow mb-5">The three tabs</p>
+            <p className="eyebrow mb-5">The four tabs</p>
             <h2 className="font-display text-3xl md:text-[2.6rem] leading-tight">
-              Not three apps stitched together.
+              Not four apps stitched together.
               <br />
-              One system, three rooms.
+              One system, four rooms.
             </h2>
           </div>
 
@@ -139,11 +151,13 @@ export default function Home() {
                   <p className="font-display italic text-xl md:text-2xl leading-snug text-[color:var(--ink)]">
                     &ldquo;
                     {i === 0 &&
-                      "The meal rotation rebuilding itself around my numbers is the first fitness thing I haven't quit after two weeks."}
-                    {i === 1 &&
-                      "I finally know my number. Not an estimate — the actual one."}
-                    {i === 2 &&
                       "Everything I was tracking in four different notes apps now lives in one tab."}
+                    {i === 1 &&
+                      "The meal rotation rebuilding itself around my numbers is the first fitness thing I haven't quit after two weeks."}
+                    {i === 2 &&
+                      "I finally know my number. Not an estimate — the actual one."}
+                    {i === 3 &&
+                      "The exposure ladder is the first tool that's actually gotten me to do the thing, not just write about avoiding it."}
                     &rdquo;
                   </p>
                   <p className="eyebrow mt-6" style={{ color: p.accent }}>
@@ -196,23 +210,24 @@ export default function Home() {
           <div className="text-center max-w-xl mx-auto mb-14">
             <p className="eyebrow mb-5">Pricing</p>
             <h2 className="font-display text-3xl md:text-[2.6rem] leading-tight">
-              One membership. All three rooms.
+              One membership. All four rooms.
             </h2>
           </div>
           <div className="card p-10 md:p-14 grid md:grid-cols-[1fr_auto] gap-10 items-center">
             <div>
               <p className="eyebrow mb-4">NODO Membership</p>
               <p className="text-[color:var(--ink-dim)] leading-relaxed mb-6 max-w-sm">
-                Reset, Finance, and Brain — synced across every device, with new
-                recipes, templates, and articles added monthly.
+                Projects Management, The Nodo Reset Method, Finances
+                Management, and Anxiety Control — synced across every device,
+                with new recipes, templates, and articles added monthly.
               </p>
               <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-[15px]">
                 {[
-                  "All three tabs, fully synced",
+                  "All four tabs, fully synced",
                   "Guided workouts & meal rotation",
                   "Live net worth & budgets",
                   "Habit tracker & focus timer",
-                  "Monthly blog & recipe drops",
+                  "Worry dump, CBT record & meditation",
                   "Cancel anytime, 5-day trial",
                 ].map((f) => (
                   <li key={f} className="flex gap-2">
@@ -224,7 +239,7 @@ export default function Home() {
             </div>
             <div className="text-center md:text-right md:border-l md:pl-10 hairline">
               <p className="font-display text-5xl tabular mb-1">
-                €14<span className="text-xl align-top">/mo</span>
+                €8<span className="text-xl align-top">/mo</span>
               </p>
               <p className="text-sm text-[color:var(--ink-faint)] mb-6">
                 billed monthly, no contract

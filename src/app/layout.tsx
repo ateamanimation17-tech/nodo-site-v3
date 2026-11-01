@@ -7,9 +7,9 @@ import "@fontsource/jetbrains-mono/500.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NODO — Reset, Money, Focus. One System.",
+  title: "NODO — Training, Money, Focus, Calm. One System.",
   description:
-    "NODO is the whole-life operating system for people who are done running six apps to manage one life. Training, food, money, and focus — one subscription, one place, synced everywhere.",
+    "NODO is the whole-life operating system for people who are done running six apps to manage one life. Training, food, money, focus, and anxiety tools — one subscription, one place, synced everywhere.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

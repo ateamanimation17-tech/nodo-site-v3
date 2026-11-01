@@ -18,8 +18,8 @@ const faqs = [
     a: "Yes — your NODO membership is tied to your account, not your browser, so your training log, budgets, and tasks follow you between your phone and laptop.",
   },
   {
-    q: "Can I use just one of the three tabs?",
-    a: "The membership includes all three — Reset, Finance, and Brain — at one price. Most people end up using at least two within the first month.",
+    q: "Can I use just one of the four tabs?",
+    a: "The membership includes all four — Projects Management, The Nodo Reset Method, Finances Management, and Anxiety Control — at one price. Most people end up using at least two within the first month.",
   },
   {
     q: "Do I need Notion or any other app?",
@@ -35,10 +35,11 @@ export default function PricingPage() {
         <section className="mx-auto max-w-4xl px-6 pt-16 pb-8 text-center">
           <p className="eyebrow mb-5">Pricing</p>
           <h1 className="font-display text-4xl md:text-5xl leading-tight mb-5">
-            One membership. All three rooms.
+            One membership. All four rooms.
           </h1>
           <p className="text-[color:var(--ink-dim)] max-w-lg mx-auto leading-relaxed">
-            Reset, Finance, and Brain, synced across every device — with new
+            Projects Management, The Nodo Reset Method, Finances Management,
+            and Anxiety Control, synced across every device — with new
             recipes, templates, and journal entries added every month.
           </p>
         </section>
@@ -60,11 +61,13 @@ export default function PricingPage() {
             </Link>
             <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-[15px] text-left max-w-lg mx-auto">
               {[
-                "All three tabs — Reset, Finance, Brain",
+                "All four tabs — Projects, Reset, Finances, Anxiety",
                 "Synced across every device",
                 "Guided workouts & macro-matched meals",
-                "Live net worth, budgets & subscriptions",
+                "Live net worth, budgets & income tracking",
                 "Habit tracker & focus timer",
+                "Worry dump, CBT thought record & guided meditation",
+                "Daily steps tracker with weekly & monthly history",
                 "Monthly recipe & journal drops",
               ].map((f) => (
                 <li key={f} className="flex gap-2">
