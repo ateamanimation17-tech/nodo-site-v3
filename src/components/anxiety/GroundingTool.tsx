@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 type Phase = "inhale" | "hold1" | "exhale" | "hold2";
 
@@ -19,12 +20,22 @@ const PHASE_SCALE: Record<Phase, number> = {
   hold2: 1,
 };
 
+async function logSession() {
+  const supabase = getSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase.from("grounding_sessions").insert({ user_id: user.id, kind: "breathing" });
+}
+
 export default function GroundingTool() {
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
   const [secondsLeft, setSecondsLeft] = useState(PHASE_SECONDS);
   const [cycles, setCycles] = useState(0);
   const phaseIndexRef = useRef(0);
+  const cyclesRef = useRef(0);
 
   useEffect(() => {
     if (!running) return;
@@ -35,7 +46,10 @@ export default function GroundingTool() {
         const nextPhase = PHASE_ORDER[phaseIndexRef.current];
         setPhase(nextPhase);
         if (nextPhase === "inhale") {
-          setCycles((c) => c + 1);
+          setCycles((c) => {
+            cyclesRef.current = c + 1;
+            return c + 1;
+          });
         }
         return PHASE_SECONDS;
       });
@@ -48,11 +62,15 @@ export default function GroundingTool() {
     setPhase("inhale");
     setSecondsLeft(PHASE_SECONDS);
     setCycles(0);
+    cyclesRef.current = 0;
     setRunning(true);
   }
 
   function stop() {
     setRunning(false);
+    if (cyclesRef.current >= 1) {
+      logSession();
+    }
   }
 
   return (
