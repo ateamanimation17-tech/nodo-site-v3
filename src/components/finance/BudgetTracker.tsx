@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 import { formatEUR } from "@/lib/currency";
+import SpendingBreakdown from "./SpendingBreakdown";
 
 type Category = { id: string; name: string; monthly_limit: number };
 type Expense = { id: string; category_id: string; amount: number; note: string | null; spent_date: string };
@@ -11,6 +12,11 @@ const inputStyle = { background: "var(--bg-raised)", border: "1px solid var(--li
 const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
+];
+
+const DEFAULT_CATEGORIES = [
+  "Groceries", "Restaurants", "Food Delivery", "Drinks", "Entertainment",
+  "Bills", "Transport", "Shopping", "Health", "Other",
 ];
 
 function monthBounds(year: number, month: number) {
@@ -52,7 +58,25 @@ export default function BudgetTracker() {
       .select("id, name, monthly_limit")
       .eq("user_id", user.id)
       .order("position", { ascending: true });
-    const catList = (cats as Category[]) ?? [];
+    let catList = (cats as Category[]) ?? [];
+
+    // First-time users get a ready-made set of categories so they can log an
+    // expense immediately instead of having to create one first.
+    if (catList.length === 0) {
+      const { data: seeded } = await supabase
+        .from("budget_categories")
+        .insert(
+          DEFAULT_CATEGORIES.map((name, i) => ({
+            user_id: user.id,
+            name,
+            monthly_limit: 0,
+            position: i,
+          }))
+        )
+        .select("id, name, monthly_limit");
+      catList = (seeded as Category[]) ?? [];
+    }
+
     setCategories(catList);
     if (!expenseCategory && catList.length > 0) setExpenseCategory(catList[0].id);
 
@@ -245,33 +269,40 @@ export default function BudgetTracker() {
       {categories.length === 0 ? (
         <p className="text-sm text-[color:var(--ink-faint)]">No categories yet — add one to start budgeting.</p>
       ) : (
-        <div className="flex flex-col gap-4">
-          {categories.map((c) => {
-            const spent = spentByCategory[c.id] ?? 0;
-            const pct = c.monthly_limit > 0 ? Math.min(Math.round((spent / c.monthly_limit) * 100), 100) : 0;
-            const over = c.monthly_limit > 0 && spent > c.monthly_limit;
-            return (
-              <div key={c.id} className="rounded-xl p-4" style={{ background: "var(--bg-raised)", border: "1px solid var(--line)" }}>
-                <div className="flex items-center justify-between mb-2 gap-2">
-                  <p className="text-[15px] font-medium">{c.name}</p>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-mono-brand tabular" style={{ color: over ? "#e08a8a" : "var(--ink-faint)" }}>
-                      {formatEUR(spent)} / {formatEUR(c.monthly_limit)}
-                    </span>
-                    <button onClick={() => removeCategory(c.id)} className="btn-ghost rounded-full px-2 py-1 text-xs">
-                      ✕
-                    </button>
+        <div className="flex flex-col gap-6">
+          <SpendingBreakdown categories={categories} spentByCategory={spentByCategory} />
+
+          <div className="flex flex-col gap-4">
+            {categories.map((c) => {
+              const spent = spentByCategory[c.id] ?? 0;
+              const pct = c.monthly_limit > 0 ? Math.min(Math.round((spent / c.monthly_limit) * 100), 100) : 0;
+              const over = c.monthly_limit > 0 && spent > c.monthly_limit;
+              return (
+                <div key={c.id} className="rounded-xl p-4" style={{ background: "var(--bg-raised)", border: "1px solid var(--line)" }}>
+                  <div className="flex items-center justify-between mb-2 gap-2">
+                    <p className="text-[15px] font-medium">{c.name}</p>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-xs font-mono-brand tabular" style={{ color: over ? "#e08a8a" : "var(--ink-faint)" }}>
+                        {formatEUR(spent)}
+                        {c.monthly_limit > 0 ? ` / ${formatEUR(c.monthly_limit)}` : ""}
+                      </span>
+                      <button onClick={() => removeCategory(c.id)} className="btn-ghost rounded-full px-2 py-1 text-xs">
+                        ✕
+                      </button>
+                    </div>
                   </div>
+                  {c.monthly_limit > 0 && (
+                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--line)" }}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${pct}%`, background: over ? "#e08a8a" : "var(--accent)" }}
+                      />
+                    </div>
+                  )}
                 </div>
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--line)" }}>
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${pct}%`, background: over ? "#e08a8a" : "var(--accent)" }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
 
           {expenses.length > 0 && (
             <div>
