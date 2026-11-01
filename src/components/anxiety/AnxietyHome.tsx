@@ -2,6 +2,8 @@
 
 import GroundingTool from "./GroundingTool";
 import MuscleRelaxation from "./MuscleRelaxation";
+import GuidedMeditation from "./GuidedMeditation";
+import AmbientSounds from "./AmbientSounds";
 import WorryDump from "./WorryDump";
 import ThoughtRecord from "./ThoughtRecord";
 import ExposureLadder from "./ExposureLadder";
@@ -14,6 +16,8 @@ export default function AnxietyHome() {
       <WeeklyProgress />
       <GroundingTool />
       <MuscleRelaxation />
+      <GuidedMeditation />
+      <AmbientSounds />
       <AnxietyCheckIn />
       <WorryDump />
       <ThoughtRecord />

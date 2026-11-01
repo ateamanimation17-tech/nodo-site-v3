@@ -6,7 +6,7 @@ import { getSupabaseClient } from "@/lib/supabaseClient";
 type AnxietyLog = { log_date: string; anxiety_level: number };
 type ExposureRow = { status: string; completed_at: string | null };
 type WorryRow = { resolved: boolean };
-type SessionRow = { kind: "breathing" | "pmr"; created_at: string };
+type SessionRow = { kind: "breathing" | "pmr" | "meditation"; created_at: string };
 
 const CHART_WIDTH = 600;
 const CHART_HEIGHT = 160;
@@ -26,7 +26,7 @@ export default function WeeklyProgress() {
   const [trend, setTrend] = useState<AnxietyLog[]>([]);
   const [exposuresThisWeek, setExposuresThisWeek] = useState(0);
   const [worryStats, setWorryStats] = useState({ resolved: 0, total: 0 });
-  const [sessionStats, setSessionStats] = useState({ breathing: 0, pmr: 0 });
+  const [sessionStats, setSessionStats] = useState({ breathing: 0, pmr: 0, meditation: 0 });
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
   async function load() {
@@ -73,6 +73,7 @@ export default function WeeklyProgress() {
     setSessionStats({
       breathing: sessionList.filter((s) => s.kind === "breathing").length,
       pmr: sessionList.filter((s) => s.kind === "pmr").length,
+      meditation: sessionList.filter((s) => s.kind === "meditation").length,
     });
 
     setLoading(false);
@@ -256,8 +257,8 @@ export default function WeeklyProgress() {
         />
         <StatTile
           label="Grounding sessions"
-          value={String(sessionStats.breathing + sessionStats.pmr)}
-          sub={`${sessionStats.breathing} breathing · ${sessionStats.pmr} PMR, this week`}
+          value={String(sessionStats.breathing + sessionStats.pmr + sessionStats.meditation)}
+          sub={`${sessionStats.breathing} breathing · ${sessionStats.pmr} PMR · ${sessionStats.meditation} meditation, this week`}
         />
       </div>
     </div>
