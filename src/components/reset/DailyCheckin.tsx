@@ -14,6 +14,7 @@ type DailyLog = {
   water_ml: number;
   water_goal_ml: number;
   weight_kg: number | null;
+  steps: number | null;
   notes: string | null;
 };
 
@@ -50,6 +51,7 @@ function emptyLog(date: string): DailyLog {
     water_ml: 0,
     water_goal_ml: 2500,
     weight_kg: null,
+    steps: null,
     notes: null,
   };
 }
@@ -61,6 +63,7 @@ export default function DailyCheckin() {
   const [log, setLog] = useState<DailyLog>(() => emptyLog(date));
   const [loading, setLoading] = useState(true);
   const [weightInput, setWeightInput] = useState("");
+  const [stepsInput, setStepsInput] = useState("");
   const [notesInput, setNotesInput] = useState("");
   const [recentWeights, setRecentWeights] = useState<{ log_date: string; weight_kg: number }[]>([]);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
@@ -78,7 +81,7 @@ export default function DailyCheckin() {
     const { data } = await supabase
       .from("reset_daily_logs")
       .select(
-        "log_date, steps_10k, no_vices, supplements, gym_session, cardio, mindset_minutes, water_ml, water_goal_ml, weight_kg, notes"
+        "log_date, steps_10k, no_vices, supplements, gym_session, cardio, mindset_minutes, water_ml, water_goal_ml, weight_kg, steps, notes"
       )
       .eq("user_id", user.id)
       .eq("log_date", date)
@@ -87,6 +90,7 @@ export default function DailyCheckin() {
     const current = (data as DailyLog | null) ?? emptyLog(date);
     setLog(current);
     setWeightInput(current.weight_kg != null ? String(current.weight_kg) : "");
+    setStepsInput(current.steps != null ? String(current.steps) : "");
     setNotesInput(current.notes ?? "");
 
     const { data: history } = await supabase
@@ -104,6 +108,7 @@ export default function DailyCheckin() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function persist(next: DailyLog) {
@@ -141,6 +146,14 @@ export default function DailyCheckin() {
     if (value != null) {
       setRecentWeights((prev) => [{ log_date: date, weight_kg: value }, ...prev.filter((w) => w.log_date !== date)].slice(0, 5));
     }
+  }
+
+  function saveSteps() {
+    const trimmed = stepsInput.trim();
+    const value = trimmed === "" ? null : Math.max(0, parseInt(trimmed, 10) || 0);
+    const next = { ...log, steps: value };
+    setLog(next);
+    persist(next);
   }
 
   function saveNotes() {
@@ -239,6 +252,28 @@ export default function DailyCheckin() {
           {recentWeights.length > 0 && (
             <p className="text-xs text-[color:var(--ink-faint)] mt-2">
               {recentWeights.map((w) => `${w.weight_kg}kg`).join(" · ")}
+            </p>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-[160px]">
+          <p className="text-[11px] uppercase tracking-wide text-[color:var(--ink-faint)] font-mono-brand mb-1.5">
+            Steps today
+          </p>
+          <div className="flex gap-2">
+            <input
+              value={stepsInput}
+              onChange={(e) => setStepsInput(e.target.value)}
+              onBlur={saveSteps}
+              onKeyDown={(e) => e.key === "Enter" && saveSteps()}
+              placeholder="from your phone or watch"
+              className="w-full rounded-md px-3 py-2 text-sm outline-none"
+              style={inputStyle}
+            />
+          </div>
+          {log.steps != null && (
+            <p className="text-xs text-[color:var(--ink-faint)] mt-2">
+              {log.steps >= 10000 ? "10k+ today" : `${(10000 - log.steps).toLocaleString()} to go for 10k`}
             </p>
           )}
         </div>
