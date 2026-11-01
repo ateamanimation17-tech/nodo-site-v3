@@ -8,10 +8,10 @@ import { getSupabaseClient } from "@/lib/supabaseClient";
 
 const TABS = [
   { href: "/app", label: "Dashboard" },
-  { href: "/app/brain", label: "Brain" },
-  { href: "/app/reset", label: "Reset" },
-  { href: "/app/finance", label: "Finance" },
-  { href: "/app/anxiety", label: "Anxiety" },
+  { href: "/app/brain", label: "Projects Management" },
+  { href: "/app/reset", label: "The Nodo Reset Method" },
+  { href: "/app/finance", label: "Finances Management" },
+  { href: "/app/anxiety", label: "Anxiety Control" },
 ];
 
 export default function AppNav() {
