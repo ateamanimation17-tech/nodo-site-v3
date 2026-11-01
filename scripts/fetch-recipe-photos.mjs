@@ -1,55 +1,78 @@
-// One-time content script: fetches a real food photo per recipe from
-// Pexels (free stock photo API) and writes the photoUrl straight into
-// src/lib/recipes.ts, next to each recipe's `id` field.
+// One-time content script: downloads a real food photo per recipe from
+// Pixabay (free stock photo API — Pexels' key issuance is paused as of
+// Nov 2026, so we use Pixabay instead) and saves it into
+// public/recipe-photos/, then writes the local photoUrl straight into
+// src/lib/recipes.ts. Pixabay's terms don't allow permanent hotlinking
+// of their URLs, so the image is downloaded and self-hosted rather
+// than linked directly.
 //
 // Usage (from the app/ directory):
-//   PEXELS_API_KEY=your_key_here node scripts/fetch-recipe-photos.mjs
+//   PIXABAY_API_KEY=your_key_here node scripts/fetch-recipe-photos.mjs
+//
+// Get a free key at https://pixabay.com/api/docs/ (sign up, the key is
+// shown on that page once logged in).
 //
 // Re-run any time you add a new recipe — add its id + search query to
-// RECIPE_QUERIES below first. Existing photoUrl values are refreshed.
+// RECIPE_QUERIES below first. Existing photos are refreshed.
 
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
 
-const API_KEY = process.env.PEXELS_API_KEY;
+const API_KEY = process.env.PIXABAY_API_KEY;
 if (!API_KEY) {
-  console.error("Missing PEXELS_API_KEY. Run with: PEXELS_API_KEY=your_key node scripts/fetch-recipe-photos.mjs");
+  console.error("Missing PIXABAY_API_KEY. Run with: PIXABAY_API_KEY=your_key node scripts/fetch-recipe-photos.mjs");
   process.exit(1);
 }
 
 // id must match a Recipe.id in src/lib/recipes.ts
 const RECIPE_QUERIES = [
-  { id: "greek-yogurt-power-bowl", query: "greek yogurt berry bowl breakfast" },
-  { id: "veggie-egg-scramble", query: "egg scramble vegetables breakfast" },
-  { id: "protein-oats", query: "oatmeal bowl banana peanut butter" },
-  { id: "smoked-salmon-toast", query: "smoked salmon toast breakfast" },
-  { id: "cottage-cheese-pancakes", query: "pancakes stack breakfast" },
+  { id: "greek-yogurt-power-bowl", query: "greek yogurt berry bowl" },
+  { id: "veggie-egg-scramble", query: "egg scramble vegetables" },
+  { id: "protein-oats", query: "oatmeal bowl banana" },
+  { id: "smoked-salmon-toast", query: "smoked salmon toast" },
+  { id: "cottage-cheese-pancakes", query: "pancakes stack" },
   { id: "chicken-quinoa-bowl", query: "grilled chicken quinoa bowl" },
-  { id: "turkey-avocado-wrap", query: "turkey avocado wrap sandwich" },
+  { id: "turkey-avocado-wrap", query: "turkey avocado wrap" },
   { id: "tuna-pasta-salad", query: "tuna pasta salad" },
-  { id: "beef-sweet-potato-skillet", query: "ground beef sweet potato skillet" },
-  { id: "baked-salmon-veg", query: "baked salmon vegetables plate" },
-  { id: "chicken-stir-fry", query: "chicken stir fry vegetables" },
-  { id: "lentil-veg-curry", query: "lentil vegetable curry bowl" },
+  { id: "beef-sweet-potato-skillet", query: "beef sweet potato skillet" },
+  { id: "baked-salmon-veg", query: "baked salmon vegetables" },
+  { id: "chicken-stir-fry", query: "chicken stir fry" },
+  { id: "lentil-veg-curry", query: "lentil vegetable curry" },
   { id: "turkey-meatballs-zoodles", query: "turkey meatballs zucchini noodles" },
-  { id: "protein-shake-almonds", query: "protein shake almonds smoothie" },
-  { id: "cottage-cheese-pineapple", query: "cottage cheese pineapple bowl" },
+  { id: "protein-shake-almonds", query: "protein shake almonds" },
+  { id: "cottage-cheese-pineapple", query: "cottage cheese pineapple" },
 ];
 
-async function fetchPhotoUrl({ id, query }) {
-  const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`;
-  const res = await fetch(url, { headers: { Authorization: API_KEY } });
+const OUT_DIR = new URL("../public/recipe-photos/", import.meta.url);
+await mkdir(OUT_DIR, { recursive: true });
+
+async function fetchAndSavePhoto({ id, query }) {
+  const searchUrl =
+    `https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(query)}` +
+    `&image_type=photo&orientation=horizontal&category=food&safesearch=true&per_page=3`;
+
+  const res = await fetch(searchUrl);
   if (!res.ok) {
-    console.warn(`  ✗ ${id}: Pexels returned ${res.status}`);
+    console.warn(`  ✗ ${id}: Pixabay search returned ${res.status}`);
     return null;
   }
   const data = await res.json();
-  const photo = data.photos?.[0];
-  if (!photo) {
+  const hit = data.hits?.[0];
+  if (!hit) {
     console.warn(`  ✗ ${id}: no results for "${query}"`);
     return null;
   }
-  console.log(`  ✓ ${id}: ${photo.url}`);
-  return photo.src.large;
+
+  const imageRes = await fetch(hit.largeImageURL);
+  if (!imageRes.ok) {
+    console.warn(`  ✗ ${id}: failed to download image (${imageRes.status})`);
+    return null;
+  }
+  const bytes = Buffer.from(await imageRes.arrayBuffer());
+  const filename = `${id}.jpg`;
+  await writeFile(new URL(filename, OUT_DIR), bytes);
+
+  console.log(`  ✓ ${id}: saved (${(bytes.length / 1024).toFixed(0)}KB, by ${hit.user} on Pixabay)`);
+  return `/recipe-photos/${filename}`;
 }
 
 const RECIPES_PATH = new URL("../src/lib/recipes.ts", import.meta.url);
@@ -57,8 +80,8 @@ let source = await readFile(RECIPES_PATH, "utf8");
 let updated = 0;
 
 for (const entry of RECIPE_QUERIES) {
-  const photoUrl = await fetchPhotoUrl(entry);
-  await new Promise((r) => setTimeout(r, 300)); // be polite to the free tier rate limit
+  const photoUrl = await fetchAndSavePhoto(entry);
+  await new Promise((r) => setTimeout(r, 400)); // stay well under Pixabay's 100 req/60s limit
   if (!photoUrl) continue;
 
   const idLine = `id: "${entry.id}",`;
@@ -68,7 +91,6 @@ for (const entry of RECIPE_QUERIES) {
     continue;
   }
 
-  // Remove any existing photoUrl line for this recipe (between this id and the next field)
   const afterId = idIndex + idLine.length;
   const existingPhotoMatch = source.slice(afterId, afterId + 200).match(/\n(\s*)photoUrl: "[^"]*",/);
   if (existingPhotoMatch) {
@@ -85,3 +107,4 @@ for (const entry of RECIPE_QUERIES) {
 
 await writeFile(RECIPES_PATH, source);
 console.log(`\nUpdated photoUrl for ${updated}/${RECIPE_QUERIES.length} recipes in src/lib/recipes.ts.`);
+console.log("Images saved under public/recipe-photos/ — commit them along with recipes.ts.");

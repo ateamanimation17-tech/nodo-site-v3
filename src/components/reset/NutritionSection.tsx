@@ -91,7 +91,7 @@ export default function NutritionSection({ targetCalories }: { targetCalories: n
               />
             ))}
           </div>
-          <p className="text-[11px] text-[color:var(--ink-faint)] mt-4">Food photos via Pexels.</p>
+          <p className="text-[11px] text-[color:var(--ink-faint)] mt-4">Food photos via Pixabay.</p>
         </>
       )}
     </div>
