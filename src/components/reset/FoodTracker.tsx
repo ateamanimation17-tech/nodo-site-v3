@@ -86,8 +86,8 @@ export default function FoodTracker({ targets }: { targets: Targets }) {
       const found = await searchFoods(query);
       setResults(found);
       if (found.length === 0) setSearchError("No matches. Try a simpler search term.");
-    } catch {
-      setSearchError("Search failed. Check your connection and try again.");
+    } catch (err) {
+      setSearchError(err instanceof Error ? err.message : "Search failed. Check your connection and try again.");
     } finally {
       setSearching(false);
     }
@@ -96,15 +96,19 @@ export default function FoodTracker({ targets }: { targets: Targets }) {
   async function handleScanned(code: string) {
     setShowScanner(false);
     setScanError(null);
-    const food = await lookupBarcode(code);
-    if (!food) {
-      setScanError(`No product found for barcode ${code}. Try searching by name instead.`);
-      return;
+    try {
+      const food = await lookupBarcode(code);
+      if (!food) {
+        setScanError(`No product found for barcode ${code}. Try searching by name instead.`);
+        return;
+      }
+      setPicked(food);
+      setGrams("100");
+      setResults([]);
+      setQuery("");
+    } catch (err) {
+      setScanError(err instanceof Error ? err.message : "Barcode lookup failed. Try again.");
     }
-    setPicked(food);
-    setGrams("100");
-    setResults([]);
-    setQuery("");
   }
 
   async function addLog() {

@@ -8,6 +8,9 @@ import WorkoutSection from "./WorkoutSection";
 import NutritionSection from "./NutritionSection";
 import FoodTracker from "./FoodTracker";
 import WorkoutMusic from "./WorkoutMusic";
+import DailyCheckin from "./DailyCheckin";
+import ProgressPhotos from "./ProgressPhotos";
+import SupplementGuide from "./SupplementGuide";
 
 export type FitnessProfile = {
   sex: Sex;
@@ -85,6 +88,7 @@ export default function ResetHome() {
         </button>
       </div>
 
+      <DailyCheckin />
       <WorkoutSection trainingDays={profile.training_days} />
       <WorkoutMusic />
       <FoodTracker
@@ -96,6 +100,8 @@ export default function ResetHome() {
         }}
       />
       <NutritionSection targetCalories={profile.target_calories} />
+      <ProgressPhotos />
+      <SupplementGuide />
     </div>
   );
 }
