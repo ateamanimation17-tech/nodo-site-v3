@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 import { formatEUR } from "@/lib/currency";
 
-type Account = { id: string; name: string; kind: "asset" | "liability"; balance: number };
+type Account = { id: string; name: string; kind: "asset" | "liability"; balance: number; is_main: boolean };
 type Snapshot = { snapshot_date: string; net_worth: number };
 
 const inputStyle = { background: "var(--bg-raised)", border: "1px solid var(--line-strong)" };
@@ -17,7 +17,7 @@ function todayStr() {
   return `${y}-${m}-${day}`;
 }
 
-export default function NetWorthTracker() {
+export default function NetWorthTracker({ refreshKey }: { refreshKey?: number } = {}) {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [snapshots, setSnapshots] = useState<Snapshot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,10 +38,26 @@ export default function NetWorthTracker() {
     }
     const { data } = await supabase
       .from("finance_accounts")
-      .select("id, name, kind, balance")
+      .select("id, name, kind, balance, is_main")
       .eq("user_id", user.id)
       .order("created_at", { ascending: true });
-    setAccounts((data as Account[]) ?? []);
+    let accountList = (data as Account[]) ?? [];
+
+    // First-time users get a live Main account (fed by income & expenses)
+    // plus a Savings account alongside it, so net worth starts out
+    // meaningful instead of empty.
+    if (accountList.length === 0) {
+      const { data: seeded } = await supabase
+        .from("finance_accounts")
+        .insert([
+          { user_id: user.id, name: "Main account", kind: "asset", balance: 0, is_main: true },
+          { user_id: user.id, name: "Savings account", kind: "asset", balance: 0, is_main: false },
+        ])
+        .select("id, name, kind, balance, is_main");
+      accountList = (seeded as Account[]) ?? [];
+    }
+
+    setAccounts(accountList);
 
     const { data: history } = await supabase
       .from("net_worth_snapshots")
@@ -57,7 +73,7 @@ export default function NetWorthTracker() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-  }, []);
+  }, [refreshKey]);
 
   async function saveSnapshot(nextAccounts: Account[]) {
     const netWorth = nextAccounts.reduce(
@@ -91,8 +107,8 @@ export default function NetWorthTracker() {
 
     const { data, error } = await supabase
       .from("finance_accounts")
-      .insert({ user_id: user.id, name: name.trim(), kind, balance: value })
-      .select("id, name, kind, balance")
+      .insert({ user_id: user.id, name: name.trim(), kind, balance: value, is_main: false })
+      .select("id, name, kind, balance, is_main")
       .single();
 
     if (!error && data) {
@@ -220,7 +236,12 @@ function AccountGroup({
         <div className="flex flex-col gap-1.5">
           {accounts.map((a) => (
             <div key={a.id} className="flex items-center justify-between text-sm py-1.5" style={{ borderBottom: "1px solid var(--line)" }}>
-              <span className="truncate">{a.name}</span>
+              <div className="min-w-0">
+                <p className="truncate">{a.name}</p>
+                {a.is_main && (
+                  <p className="text-[10px] text-[color:var(--ink-faint)]">auto · updates with income &amp; expenses</p>
+                )}
+              </div>
               <div className="flex items-center gap-2 shrink-0">
                 {editing === a.id ? (
                   <input

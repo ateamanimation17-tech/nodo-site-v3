@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 import { formatEUR } from "@/lib/currency";
+import { adjustMainAccountBalance } from "@/lib/financeAccounts";
 import SpendingBreakdown from "./SpendingBreakdown";
 
 type Category = { id: string; name: string; monthly_limit: number };
@@ -26,7 +27,7 @@ function monthBounds(year: number, month: number) {
   return { start, end };
 }
 
-export default function BudgetTracker() {
+export default function BudgetTracker({ onChange }: { onChange?: () => void } = {}) {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
@@ -159,13 +160,25 @@ export default function BudgetTracker() {
       setExpenseAmount("");
       setExpenseNote("");
       setShowLogExpense(false);
+      await adjustMainAccountBalance(user.id, -amount);
+      onChange?.();
     }
   }
 
   async function removeExpense(id: string) {
+    const target = expenses.find((e) => e.id === id);
     const supabase = getSupabaseClient();
     await supabase.from("budget_expenses").delete().eq("id", id);
     setExpenses((prev) => prev.filter((e) => e.id !== id));
+    if (target) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        await adjustMainAccountBalance(user.id, target.amount);
+        onChange?.();
+      }
+    }
   }
 
   if (loading) {
